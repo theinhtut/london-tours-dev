@@ -1,0 +1,23 @@
+version: '3'
+services:
+  # CMS
+  tours-cms:
+    build: ./services/
+    ports:
+      - '1337:1337'
+    volumes:
+      - /client/node_modules
+  # FrontEnd
+  tour-frontend:
+    build: ./client/
+    ports:
+      - '8000:8000'
+    volumes:
+      - /client/node_modules
+      - ./client:/app
+    environment:
+      - NODE_ENV=development
+      - GATSBY_WEBPACK_PUBLICPATH=/
+      - ENABLE_GATSBY_REFRESH_ENDPOINT=true
+    depends_on:
+      - 'tours-cms'
